@@ -13,3 +13,20 @@ public class Patient extends Person {
         this.prescriptions = new ArrayList<>();
     }
 
+    // Getters and Setters
+    public List<Medication> getMedications() {
+        return medications;
+    }
+
+    public void setMedications(List<Medication> medications) {
+        this.medications = medications;
+    }
+
+    public List<Prescription> getPrescriptions() {
+        return prescriptions;
+    }
+
+    public void setPrescriptions(List<Prescription> prescriptions) {
+        this.prescriptions = prescriptions;
+    }
+}

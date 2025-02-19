@@ -13,3 +13,20 @@ public class Doctor extends Person {
         this.patients = new ArrayList<>();
     }
 
+    // Getters and Setters
+    public String getSpecialization() {
+        return specialization;
+    }
+
+    public void setSpecialization(String specialization) {
+        this.specialization = specialization;
+    }
+
+    public List<Patient> getPatients() {
+        return patients;
+    }
+
+    public void setPatients(List<Patient> patients) {
+        this.patients = patients;
+    }
+}
