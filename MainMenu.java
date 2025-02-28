@@ -32,7 +32,7 @@ public class MainMenu {
                 case 6 -> processANewScript(scanner, system);
                 case 7 -> printScriptsForSpecificDoctor(scanner, system);
                 case 8 -> restockPharmacyDrugs(scanner, system);
-                case 9 -> printAllScriptsForPatientByName(scanner, system);
+                case 9 -> printAllScriptsForPatient(scanner, system);
                 case 10 -> {
                     exit = true;
                     System.out.println("Exiting The System! Good Bye!");
@@ -103,8 +103,11 @@ public class MainMenu {
     private static void addANewDoctor(Scanner scanner, MedicationTrackingSystem system) {
         System.out.println("Enter Doctor ID:");
         String id = scanner.next();
-        System.out.println("Enter Doctor Name:");
-        String name = scanner.next();
+        System.out.println("Enter Doctor First Name:");
+        String firstName = scanner.next();
+        System.out.println("Enter Doctor Last Name:");
+        String lastName = scanner.next();
+        String name = firstName + " " + lastName; // Combine first name and last name
         System.out.println("Enter Doctor Age:");
         int age = scanner.nextInt();
         scanner.nextLine(); // Consume the newline character
@@ -116,6 +119,7 @@ public class MainMenu {
         system.addDoctor(doctor);
         System.out.println("Doctor added successfully!");
     }
+    
 
     private static void deleteDoctor(Scanner scanner, MedicationTrackingSystem system) {
         System.out.println("Enter Doctor ID to delete:");
@@ -127,10 +131,11 @@ public class MainMenu {
     private static void addNewMedicationToPharmacy(Scanner scanner, MedicationTrackingSystem system) {
         System.out.println("Enter Medication ID:");
         String id = scanner.next();
+        scanner.nextLine(); // Consume the newline character
         System.out.println("Enter Medication Name:");
-        String name = scanner.next();
+        String name = scanner.nextLine(); // Use nextLine() to read the entire name
         System.out.println("Enter Medication Dose:");
-        String dose = scanner.next();
+        String dose = scanner.nextLine(); // Use nextLine() to read the entire dose
         System.out.println("Enter Quantity in Stock:");
         int quantityInStock = scanner.nextInt();
         scanner.nextLine(); // Consume the newline character
@@ -143,10 +148,22 @@ public class MainMenu {
     }
 
     private static void deleteMedication(Scanner scanner, MedicationTrackingSystem system) {
-        System.out.println("Enter Medication ID to delete:");
-        String id = scanner.next();
-        system.deleteMedication(id);
-        System.out.println("Medication deleted successfully!");
+        System.out.println("Enter Medication ID or Name to delete:");
+        String input = scanner.nextLine();
+        
+        // Try to delete by ID first
+        boolean deleted = system.deleteMedicationById(input);
+        
+        // If not deleted by ID, try to delete by name
+        if (!deleted) {
+            deleted = system.deleteMedicationByName(input);
+        }
+        
+        if (deleted) {
+            System.out.println("Medication deleted successfully!");
+        } else {
+            System.out.println("Medication not found!");
+        }
     }
 
     private static void printPharmacyReport(MedicationTrackingSystem system) {
@@ -198,10 +215,18 @@ public class MainMenu {
     }
 
     private static void printScriptsForSpecificDoctor(Scanner scanner, MedicationTrackingSystem system) {
-        System.out.println("Enter Doctor ID:");
-        String doctorId = scanner.next();
-        // Example implementation for printing all prescriptions for a specific doctor
-        Doctor doctor = system.findDoctorById(doctorId);
+        System.out.println("Enter Doctor Name or ID:");
+        String input = scanner.nextLine();
+    
+        Doctor doctor = null;
+    
+        // Check if the input is a name or an ID
+        if (input.matches("\\d+")) { // Assuming IDs are numeric
+            doctor = system.findDoctorById(input);
+        } else {
+            doctor = system.findDoctorByName(input);
+        }
+    
         if (doctor != null) {
             for (Prescription prescription : system.getPrescriptions()) {
                 if (prescription.getDoctor().equals(doctor)) {
@@ -226,18 +251,27 @@ public class MainMenu {
         }
     }
     
-    private static void printAllScriptsForPatientByName(Scanner scanner, MedicationTrackingSystem system) {
-        System.out.println("Enter Patient Name:");
-        String patientName = scanner.next();
-        // Example implementation for printing all prescriptions for a specific patient
-        for (Patient patient : system.getPatients()) {
-            if (patient.getName().equalsIgnoreCase(patientName)) {
-                for (Prescription prescription : system.getPrescriptions()) {
-                    if (prescription.getPatient().equals(patient)) {
-                        System.out.println("Prescription ID: " + prescription.getId() + ", Medication: " + prescription.getMedication().getName());
-                    }
+    private static void printAllScriptsForPatient(Scanner scanner, MedicationTrackingSystem system) {
+        System.out.println("Enter Patient Name or ID:");
+        String input = scanner.nextLine();
+    
+        Patient patient = null;
+    
+        // Check if the input is a name or an ID
+        if (input.matches("\\d+")) { // Assuming IDs are numeric
+            patient = system.findPatientById(input);
+        } else {
+            patient = system.findPatientByName(input);
+        }
+    
+        if (patient != null) {
+            for (Prescription prescription : system.getPrescriptions()) {
+                if (prescription.getPatient().equals(patient)) {
+                    System.out.println("Prescription ID: " + prescription.getId() + ", Medication: " + prescription.getMedication().getName());
                 }
             }
+        } else {
+            System.out.println("Patient not found!");
         }
     }
 }
