@@ -43,24 +43,36 @@ public class MainMenu {
     }
 
     private static void managePatient(Scanner scanner, MedicationTrackingSystem system) {
-        System.out.println("1: Add A New Patient");
-        System.out.println("2: Delete A Patient");
-        int choice = scanner.nextInt();
-        switch (choice) {
-            case 1 -> addANewPatient(scanner, system);
-            case 2 -> deletePatient(scanner, system);
-            default -> System.out.println("Invalid option");
+        try {
+            System.out.println("1: Add A New Patient");
+            System.out.println("2: Delete A Patient");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume the newline character
+            switch (choice) {
+                case 1 -> addANewPatient(scanner, system);
+                case 2 -> deletePatient(scanner, system);
+                default -> System.out.println("Invalid option");
+            }
+        } catch (Exception e) {
+            System.out.println("Invalid input. Please enter a valid option.");
+            scanner.nextLine(); // Clear the invalid input
         }
     }
-
+    
     private static void manageDoctor(Scanner scanner, MedicationTrackingSystem system) {
-        System.out.println("1: Add A New Doctor");
-        System.out.println("2: Delete A Doctor");
-        int choice = scanner.nextInt();
-        switch (choice) {
-            case 1 -> addANewDoctor(scanner, system);
-            case 2 -> deleteDoctor(scanner, system);
-            default -> System.out.println("Invalid option");
+        try {
+            System.out.println("1: Add A New Doctor");
+            System.out.println("2: Delete A Doctor");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume the newline character
+            switch (choice) {
+                case 1 -> addANewDoctor(scanner, system);
+                case 2 -> deleteDoctor(scanner, system);
+                default -> System.out.println("Invalid option");
+            }
+        } catch (Exception e) {
+            System.out.println("Invalid input. Please enter a valid option.");
+            scanner.nextLine(); // Clear the invalid input
         }
     }
 
@@ -76,28 +88,69 @@ public class MainMenu {
     }
 
     private static void addANewPatient(Scanner scanner, MedicationTrackingSystem system) {
-        System.out.println("Enter Patient ID:");
-        String id = scanner.next();
-        System.out.println("Enter Patient First Name:");
-        String firstName = scanner.next();
-        System.out.println("Enter Patient Last Name:");
-        String lastName = scanner.next();
-        String name = firstName + " " + lastName; // Combine first name and last name
-        System.out.println("Enter Patient Age:");
-        int age = scanner.nextInt();
-        scanner.nextLine(); // Consume the newline character
-        System.out.println("Enter Patient Phone Number:");
-        String phoneNumber = scanner.next();
-        Patient patient = new Patient(id, name, age, phoneNumber);
-        system.addPatient(patient);
-        System.out.println("Patient added successfully!");
+        try {
+            System.out.println("Enter Patient ID:");
+            String id = scanner.next();
+            scanner.nextLine(); // Consume the newline character
+    
+            System.out.println("Enter Patient First Name:");
+            String firstName = scanner.nextLine();
+            if (!firstName.matches("[a-zA-Z]+")) {
+                throw new IllegalArgumentException("Invalid first name. Please enter alphabetic characters only.");
+            }
+    
+            System.out.println("Enter Patient Last Name:");
+            String lastName = scanner.nextLine();
+            if (!lastName.matches("[a-zA-Z]+")) {
+                throw new IllegalArgumentException("Invalid last name. Please enter alphabetic characters only.");
+            }
+    
+            String name = firstName + " " + lastName; // Combine first name and last name
+    
+            System.out.println("Enter Patient Age:");
+            int age = scanner.nextInt();
+            scanner.nextLine(); // Consume the newline character
+    
+            System.out.println("Enter Patient Phone Number:");
+            String phoneNumber = scanner.next();
+            scanner.nextLine(); // Consume the newline character
+    
+            Patient patient = new Patient(id, name, age, phoneNumber);
+            system.addPatient(patient);
+            System.out.println("Patient added successfully!");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            System.out.println("An error occurred. Please try again.");
+        }
     }
 
     private static void deletePatient(Scanner scanner, MedicationTrackingSystem system) {
-        System.out.println("Enter Patient ID to delete:");
-        String id = scanner.next();
-        system.deletePatient(id);
-        System.out.println("Patient deleted successfully!");
+        try {
+            System.out.println("Enter Patient ID or Name to delete:");
+            String input = scanner.nextLine();
+    
+            boolean deleted = false;
+    
+            // Check if the input is a numeric ID
+            if (input.matches("\\d+")) {
+                deleted = system.deletePatientById(input);
+            }
+    
+            // If not deleted by ID, try to delete by name
+            if (!deleted) {
+                deleted = system.deletePatientByName(input);
+            }
+    
+            if (deleted) {
+                System.out.println("Patient deleted successfully!");
+            } else {
+                System.out.println("Patient not found!");
+            }
+        } catch (Exception e) {
+            System.out.println("An error occurred. Please try again.");
+            scanner.nextLine(); // Clear the invalid input
+        }
     }
 
     private static void addANewDoctor(Scanner scanner, MedicationTrackingSystem system) {
@@ -122,47 +175,101 @@ public class MainMenu {
     
 
     private static void deleteDoctor(Scanner scanner, MedicationTrackingSystem system) {
-        System.out.println("Enter Doctor ID to delete:");
-        String id = scanner.next();
-        system.deleteDoctor(id);
-        System.out.println("Doctor deleted successfully!");
+        try {
+            System.out.println("Enter Doctor ID or Name to delete:");
+            String input = scanner.nextLine();
+    
+            boolean deleted = false;
+    
+            // Check if the input is a numeric ID
+            if (input.matches("\\d+")) {
+                deleted = system.deleteDoctorById(input);
+            }
+    
+            // If not deleted by ID, try to delete by name
+            if (!deleted) {
+                deleted = system.deleteDoctorByName(input);
+            }
+    
+            if (deleted) {
+                System.out.println("Doctor deleted successfully!");
+            } else {
+                System.out.println("Doctor not found!");
+            }
+        } catch (Exception e) {
+            System.out.println("An error occurred. Please try again.");
+            scanner.nextLine(); // Clear the invalid input
+        }
     }
 
     private static void addNewMedicationToPharmacy(Scanner scanner, MedicationTrackingSystem system) {
-        System.out.println("Enter Medication ID:");
-        String id = scanner.next();
-        scanner.nextLine(); // Consume the newline character
-        System.out.println("Enter Medication Name:");
-        String name = scanner.nextLine(); // Use nextLine() to read the entire name
-        System.out.println("Enter Medication Dose:");
-        String dose = scanner.nextLine(); // Use nextLine() to read the entire dose
-        System.out.println("Enter Quantity in Stock:");
-        int quantityInStock = scanner.nextInt();
-        scanner.nextLine(); // Consume the newline character
-        System.out.println("Enter Expiry Date (yyyy-mm-dd):");
-        String expiryDateStr = scanner.next();
-        Date expiryDate = java.sql.Date.valueOf(expiryDateStr);
-        Medication medication = new Medication(id, name, dose, quantityInStock, expiryDate);
-        system.addMedication(medication);
-        System.out.println("Medication added successfully!");
+        try {
+            System.out.println("Enter Medication ID:");
+            String id = scanner.next();
+            scanner.nextLine(); // Consume the newline character
+    
+            System.out.println("Enter Medication Name:");
+            String name = scanner.nextLine();
+            if (name.trim().isEmpty()) {
+                throw new IllegalArgumentException("Medication name cannot be empty.");
+            }
+    
+            System.out.println("Enter Medication Dose:");
+            String dose = scanner.nextLine();
+            if (dose.trim().isEmpty()) {
+                throw new IllegalArgumentException("Medication dose cannot be empty.");
+            }
+    
+            System.out.println("Enter Quantity in Stock:");
+            int quantityInStock = scanner.nextInt();
+            if (quantityInStock < 0) {
+                throw new IllegalArgumentException("Quantity in stock cannot be negative.");
+            }
+            scanner.nextLine(); // Consume the newline character
+    
+            System.out.println("Enter Expiry Date (yyyy-mm-dd):");
+            String expiryDateStr = scanner.next();
+            Date expiryDate = java.sql.Date.valueOf(expiryDateStr);
+    
+            Medication medication = new Medication(id, name, dose, quantityInStock, expiryDate);
+            system.addMedication(medication);
+            System.out.println("Medication added successfully!");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            System.out.println("An error occurred. Please try again.");
+            scanner.nextLine(); // Clear the invalid input
+        }
     }
 
     private static void deleteMedication(Scanner scanner, MedicationTrackingSystem system) {
-        System.out.println("Enter Medication ID or Name to delete:");
-        String input = scanner.nextLine();
-        
-        // Try to delete by ID first
-        boolean deleted = system.deleteMedicationById(input);
-        
-        // If not deleted by ID, try to delete by name
-        if (!deleted) {
-            deleted = system.deleteMedicationByName(input);
-        }
-        
-        if (deleted) {
-            System.out.println("Medication deleted successfully!");
-        } else {
-            System.out.println("Medication not found!");
+        try {
+            System.out.println("Enter Medication ID or Name to delete:");
+            String input = scanner.nextLine();
+    
+            boolean deletedById = false;
+            boolean deletedByName = false;
+    
+            // Check if the input is a numeric ID
+            if (input.matches("\\d+")) {
+                deletedById = system.deleteMedicationById(input);
+            }
+    
+            // If not deleted by ID, try to delete by name
+            if (!deletedById) {
+                deletedByName = system.deleteMedicationByName(input);
+            }
+    
+            if (deletedById || deletedByName) {
+                System.out.println("Medication deleted successfully!");
+            } else {
+                System.out.println("No medication found with the given ID or name.");
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid input: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("An unexpected error occurred. Please try again.");
+            scanner.nextLine(); // Clear the invalid input
         }
     }
 
@@ -215,26 +322,34 @@ public class MainMenu {
     }
 
     private static void printScriptsForSpecificDoctor(Scanner scanner, MedicationTrackingSystem system) {
-        System.out.println("Enter Doctor Name or ID:");
-        String input = scanner.nextLine();
+        try {
+            System.out.println("Enter Doctor Name or ID:");
+            String input = scanner.nextLine();
     
-        Doctor doctor = null;
+            Doctor doctorById = null;
+            Doctor doctorByName = null;
     
-        // Check if the input is a name or an ID
-        if (input.matches("\\d+")) { // Assuming IDs are numeric
-            doctor = system.findDoctorById(input);
-        } else {
-            doctor = system.findDoctorByName(input);
-        }
-    
-        if (doctor != null) {
-            for (Prescription prescription : system.getPrescriptions()) {
-                if (prescription.getDoctor().equals(doctor)) {
-                    System.out.println("Prescription ID: " + prescription.getId() + ", Medication: " + prescription.getMedication().getName());
-                }
+            // Check if the input is a numeric ID
+            if (input.matches("\\d+")) { // Assuming IDs are numeric
+                doctorById = system.findDoctorById(input);
+            } else {
+                doctorByName = system.findDoctorByName(input);
             }
-        } else {
-            System.out.println("Doctor not found.");
+    
+            Doctor doctor = (doctorById != null) ? doctorById : doctorByName;
+    
+            if (doctor != null) {
+                for (Prescription prescription : system.getPrescriptions()) {
+                    if (prescription.getDoctor().equals(doctor)) {
+                        System.out.println("Prescription ID: " + prescription.getId() + ", Medication: " + prescription.getMedication().getName());
+                    }
+                }
+            } else {
+                System.out.println("Doctor not found.");
+            }
+        } catch (Exception e) {
+            System.out.println("An unexpected error occurred. Please try again.");
+            scanner.nextLine(); // Clear the invalid input
         }
     }
     
@@ -252,26 +367,34 @@ public class MainMenu {
     }
     
     private static void printAllScriptsForPatient(Scanner scanner, MedicationTrackingSystem system) {
-        System.out.println("Enter Patient Name or ID:");
-        String input = scanner.nextLine();
+        try {
+            System.out.println("Enter Patient Name or ID:");
+            String input = scanner.nextLine();
     
-        Patient patient = null;
+            Patient patientById = null;
+            Patient patientByName = null;
     
-        // Check if the input is a name or an ID
-        if (input.matches("\\d+")) { // Assuming IDs are numeric
-            patient = system.findPatientById(input);
-        } else {
-            patient = system.findPatientByName(input);
-        }
-    
-        if (patient != null) {
-            for (Prescription prescription : system.getPrescriptions()) {
-                if (prescription.getPatient().equals(patient)) {
-                    System.out.println("Prescription ID: " + prescription.getId() + ", Medication: " + prescription.getMedication().getName());
-                }
+            // Check if the input is a numeric ID
+            if (input.matches("\\d+")) { // Assuming IDs are numeric
+                patientById = system.findPatientById(input);
+            } else {
+                patientByName = system.findPatientByName(input);
             }
-        } else {
-            System.out.println("Patient not found!");
+    
+            Patient patient = (patientById != null) ? patientById : patientByName;
+    
+            if (patient != null) {
+                for (Prescription prescription : system.getPrescriptions()) {
+                    if (prescription.getPatient().equals(patient)) {
+                        System.out.println("Prescription ID: " + prescription.getId() + ", Medication: " + prescription.getMedication().getName());
+                    }
+                }
+            } else {
+                System.out.println("Patient not found!");
+            }
+        } catch (Exception e) {
+            System.out.println("An unexpected error occurred. Please try again.");
+            scanner.nextLine(); // Clear the invalid input
         }
     }
 }

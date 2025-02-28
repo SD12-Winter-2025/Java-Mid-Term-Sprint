@@ -41,12 +41,20 @@ public class MedicationTrackingSystem {
     }
 
     // Methods to delete a patient, doctor, or medication
-    public void deletePatient(String id) {
-        patients.removeIf(patient -> patient.getId().equals(id));
+    public boolean deletePatientById(String id) {
+        return patients.removeIf(patient -> patient.getId().equals(id));
+    }
+    
+    public boolean deletePatientByName(String name) {
+        return patients.removeIf(patient -> patient.getName().equalsIgnoreCase(name));
     }
 
-    public void deleteDoctor(String id) {
-        doctors.removeIf(doctor -> doctor.getId().equals(id));
+    public boolean deleteDoctorById(String id) {
+        return doctors.removeIf(doctor -> doctor.getId().equals(id));
+    }
+    
+    public boolean deleteDoctorByName(String name) {
+        return doctors.removeIf(doctor -> doctor.getName().equalsIgnoreCase(name));
     }
 
     public void deleteMedication(String id) {
