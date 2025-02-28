@@ -53,6 +53,14 @@ public class MedicationTrackingSystem {
         medications.removeIf(medication -> medication.getId().equals(id));
     }
 
+    public boolean deleteMedicationById(String id) {
+        return medications.removeIf(medication -> medication.getId().equals(id));
+    }
+
+    public boolean deleteMedicationByName(String name) {
+        return medications.removeIf(medication -> medication.getName().equalsIgnoreCase(name));
+    }
+
     // Methods to edit a patient, doctor, or medication
     public void editPatient(String id, String name, int age, String phoneNumber) {
         for (Patient patient : patients) {
