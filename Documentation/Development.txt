@@ -1,0 +1,170 @@
+1. Javadocs
+1.1 Generating Javadocs
+To generate Javadocs for your project, you can use the following command in your terminal or command prompt:
+
+javadoc -d doc -sourcepath src MedicationTracking/*.java
+This command will generate the Javadocs in the doc directory based on the source files in the src/MedicationTracking directory.
+
+1.2 Example Javadoc Comments
+Here are example Javadoc comments for the Patient class:
+
+/**
+ * Represents a patient in the medication tracking system.
+ * Extends the Person class and includes additional attributes for managing medications and prescriptions.
+ */
+public class Patient extends Person {
+    private List<Medication> medications;
+    private List<Prescription> prescriptions;
+
+    /**
+     * Constructs a new Patient with the specified details.
+     *
+     * @param id          the ID of the patient
+     * @param name        the name of the patient
+     * @param age         the age of the patient
+     * @param phoneNumber the phone number of the patient
+     */
+    public Patient(String id, String name, int age, String phoneNumber) {
+        super(id, name, age, phoneNumber);
+        this.medications = new ArrayList<>();
+        this.prescriptions = new ArrayList<>();
+    }
+
+    // Getters and setters with Javadoc comments
+}
+2. Source Code Directory Structure
+The source code directory structure for the Medication Tracking System is as follows:
+
+MedicationTrackingSystem/
+├── src/
+│   └── MedicationTracking/
+│       ├── Doctor.java
+│       ├── Medication.java
+│       ├── MedicationTrackingSystem.java
+│       ├── MainMenu.java
+│       ├── Patient.java
+│       ├── Person.java
+│       └── Prescription.java
+├── doc/ (generated Javadocs)
+├── README.md
+└── build/
+3. Build Process
+3.1 Compiling the Project
+To compile the project, navigate to the src directory and use the following command:
+
+javac MedicationTracking/*.java
+This command will compile all the Java files in the MedicationTracking package.
+
+3.2 Running the Application
+After compiling the project, you can run the MainMenu class using the following command:
+
+java MedicationTracking.MainMenu
+4. Compiler Time Dependencies
+The project does not have any external dependencies and relies solely on the standard Java Development Kit (JDK). Ensure that you have the JDK installed on your system.
+
+5. Development Standards
+5.1 Coding Conventions
+Class Names: Use PascalCase for class names (e.g., Patient, Doctor).
+Method Names: Use camelCase for method names (e.g., addPatient, findDoctorById).
+Variable Names: Use camelCase for variable names (e.g., patientName, medicationId).
+Comments: Use Javadoc comments for classes and methods. Use inline comments to explain complex logic.
+5.2 Version Control
+Use Git for version control.
+Commit changes frequently with meaningful commit messages.
+Use branches for new features and bug fixes.
+6. Database Design (Theoretical)
+6.1 Entity Relationships
+The database design for the Medication Tracking System includes the following entities and relationships:
+
+Person: Represents a person with common attributes such as ID, name, age, and phone number.
+Patient: Extends the Person entity and includes additional attributes for managing medications and prescriptions.
+Doctor: Extends the Person entity and includes a specialization attribute and a list of patients.
+Medication: Represents a medication with attributes such as ID, name, dose, quantity in stock, and expiry date.
+Prescription: Represents a prescription with attributes such as ID, doctor, patient, medication, and prescription expiry date. 
+
+6.2 Entity Relationship Diagram (ERD)
++-------------------+       +-------------------+
+|      Person       |<------+     Patient       |
++-------------------+       +-------------------+
+| - id: String      |       | - medications: List<Medication> |
+| - name: String    |       | - prescriptions: List<Prescription> |
+| - age: int        |       +-------------------+
+| - phoneNumber: String     |
++-------------------+       +-------------------+
+        ^                   |
+        |                   |
+        |                   |
++-------------------+       |
+|      Doctor       |       |
++-------------------+       |
+| - specialization: String  |
+| - patients: List<Patient> |
++-------------------+       |
+        ^                   |
+        |                   |
+        |                   |
++-------------------+       |
+|   Prescription    |       |
++-------------------+       |
+| - id: String      |       |
+| - doctor: Doctor  |-------+
+| - patient: Patient|
+| - medication: Medication  |
+| - prescriptionExpiry: Date|
++-------------------+       |
+        ^                   |
+        |                   |
+        |                   |
++-------------------+       |
+|    Medication     |       |
++-------------------+       |
+| - id: String      |       |
+| - name: String    |       |
+| - dose: String    |       |
+| - quantityInStock: int    |
+| - expiryDate: Date        |
++-------------------+       |
+        ^                   |
+        |                   |
+        |                   |
++-------------------+       |
+| MedicationTrackingSystem  |
++-------------------+       |
+| - patients: List<Patient> |
+| - doctors: List<Doctor>   |
+| - medications: List<Medication> |
+| - prescriptions: List<Prescription> |
++-------------------+       |
+        ^                   |
+        |                   |
+        |                   |
++-------------------+       |
+|     MainMenu      |       |
++-------------------+       |
+| - main(args: String[])    |
++-------------------+       |
+
+
+
+
+7. Getting the Source Code from GitHub
+7.1 Cloning the Repository
+To get the source code from the GitHub repository, use the following command:
+
+git clone https://github.com/your-username/MedicationTrackingSystem.git
+Replace your-username with your actual GitHub username.
+
+7.2 Navigating the Project
+After cloning the repository, navigate to the project directory:
+
+cd MedicationTrackingSystem
+7.3 Branches and Commits
+Branches: Use branches for new features and bug fixes. For example, create a new branch for a feature:
+git checkout -b feature-new-feature
+Commits: Commit changes frequently with meaningful commit messages:
+git commit -m "Add new feature"
+7.4 Pushing Changes
+To push changes to the remote repository, use the following command:
+
+git push origin feature-new-feature
+Replace feature-new-feature with the name of your branch.

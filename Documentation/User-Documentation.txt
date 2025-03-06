@@ -1,0 +1,96 @@
+Medication Tracking System Documentation
+1. Introduction
+1.1 Overview
+The Medication Tracking System is a comprehensive application designed to manage patients, doctors, medications, and prescriptions within a pharmacy. The system allows users to add, edit, delete, and search for patients, doctors, and medications. It also provides functionalities to process prescriptions, check for expired medications, and generate various reports.
+
+1.2 Purpose
+The purpose of this documentation is to provide a detailed explanation of the application's functionality, the classes involved, and how to start and use the system. This document is intended for users and developers who wish to understand the inner workings of the Medication Tracking System.
+
+2. Class Descriptions
+2.1 Person
+The Person class is a base class that represents a person with common attributes such as ID, name, age, and phone number.
+
+public class Person {
+    private String id;
+    private String name;
+    private int age;
+    private String phoneNumber;
+
+    // Constructor, getters, and setters
+}
+2.2 Patient
+The Patient class extends the Person class and includes additional attributes for managing medications and prescriptions.
+
+public class Patient extends Person {
+    private List<Medication> medications;
+    private List<Prescription> prescriptions;
+
+    // Constructor, getters, and setters
+}
+2.3 Doctor
+The Doctor class extends the Person class and includes a specialization attribute and a list of patients.
+
+public class Doctor extends Person {
+    private String specialization;
+    private List<Patient> patients;
+
+    // Constructor, getters, and setters
+}
+2.4 Medication
+The Medication class represents a medication with attributes such as ID, name, dose, quantity in stock, and expiry date.
+
+public class Medication {
+    private String id;
+    private String name;
+    private String dose;
+    private int quantityInStock;
+    private Date expiryDate;
+
+    // Constructor, getters, and setters
+}
+2.5 Prescription
+The Prescription class represents a prescription with attributes such as ID, doctor, patient, medication, and prescription expiry date.
+
+public class Prescription {
+    private String id;
+    private Doctor doctor;
+    private Patient patient;
+    private Medication medication;
+    private Date prescriptionExpiry;
+
+    // Constructor, getters, and setters
+}
+2.6 MedicationTrackingSystem
+The MedicationTrackingSystem class manages the lists of patients, doctors, medications, and prescriptions. It provides methods to add, edit, delete, and search for these entities.
+
+public class MedicationTrackingSystem {
+    private final List<Patient> patients;
+    private final List<Doctor> doctors;
+    private final List<Medication> medications;
+    private final List<Prescription> prescriptions;
+
+    // Constructor, methods to add, edit, delete, and search for entities
+}
+2.7 MainMenu
+The MainMenu class provides a user interface for interacting with the Medication Tracking System. It includes methods for adding, editing, deleting, and searching for patients, doctors, and medications, as well as processing prescriptions and generating reports.
+
+public class MainMenu {
+    public static void main(String[] args) {
+        MedicationTrackingSystem system = new MedicationTrackingSystem();
+        // Main menu implementation
+    }
+
+    // Methods for various functionalities
+}
+3. How to Start and Access the Application
+3.1 Prerequisites
+Java Development Kit (JDK) installed on your system
+An Integrated Development Environment (IDE) such as IntelliJ IDEA or Eclipse
+3.2 Steps to Run the Application
+Clone the Repository: Clone the project repository from the version control system (e.g., GitHub).
+Open the Project: Open the project in your preferred IDE.
+Compile the Code: Ensure that all the classes are compiled without errors.
+Run the Main Class: Run the MainMenu class to start the application.
+3.3 Using the Application
+Main Menu: The main menu provides options to add, edit, delete, and search for patients, doctors, and medications. It also allows you to process prescriptions, check for expired medications, and generate reports.
+User Input: Follow the prompts in the console to enter the required information for each operation.
