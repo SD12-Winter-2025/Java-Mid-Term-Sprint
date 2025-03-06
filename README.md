@@ -14,3 +14,7 @@ For full documentation on :
 
 Click on the attached PDF : "Java - Midterm - User Documentation"
 
+
+
+
+Video Submissions on program usage and functionality are added as Zip files.  (Still learning how the mechanics of Github, I dont know how to group them all into a single folder once uploaded just yet)
